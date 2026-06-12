@@ -63,6 +63,20 @@ body{font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--c
 .req{color:var(--rust)}
 @media(max-width:560px){.fg{grid-template-columns:1fr}}
 
+/* DETAILS GATE (lock model/options until details entered) */
+.lock-notice{display:none;align-items:center;gap:12px;background:linear-gradient(135deg,var(--rust),var(--orange));color:#fff;padding:15px 20px;border-radius:13px;margin-top:26px;font-size:13.5px;font-weight:600;line-height:1.45;box-shadow:0 5px 18px rgba(196,89,26,.32)}
+.lock-notice .lk-ico{font-size:22px;flex-shrink:0}
+.lock-notice.unlocked{background:linear-gradient(135deg,var(--olive),#3f5417)}
+#build-section{position:relative}
+#build-section.locked .step{opacity:.5;filter:grayscale(.55);pointer-events:none;user-select:none;transition:opacity .3s,filter .3s}
+.build-lock{display:none;position:absolute;inset:0;z-index:20;align-items:center;justify-content:center;padding:24px;background:linear-gradient(180deg,rgba(250,246,239,.70),rgba(250,246,239,.92))}
+#build-section.locked .build-lock{display:flex}
+.bl-card{background:#fff;border:2.5px solid var(--orange);border-radius:16px;max-width:430px;text-align:center;padding:28px 30px;box-shadow:0 14px 44px rgba(0,0,0,.20)}
+.bl-ico{font-size:36px;margin-bottom:10px}
+.bl-t{font-size:18px;font-weight:800;color:var(--dark);margin-bottom:9px;letter-spacing:.3px}
+.bl-d{font-size:13px;line-height:1.55;color:var(--mid)}
+.bl-arrow{margin-top:14px;font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange)}
+
 /* ── MODEL CARDS ── */
 .model-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:8px}
 .mc{border:2.5px solid var(--border);border-radius:13px;overflow:hidden;cursor:pointer;transition:border-color .2s,transform .2s,box-shadow .2s;position:relative}
@@ -169,7 +183,7 @@ body{font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--c
   <div class="hero-vignette"></div>
   <div class="hero-inner">
     <div class="hero-qr" data-qr-url="https://rainbow-babka-6e2adc.netlify.app/rover">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAAFKCAIAAAD0S4FSAAAFN0lEQVR42u3dQXLbMBBFwSjFe+j+x/JJmF2WLCXj8R8A3XvZFKlX4GIKeN33/QvY0W+3AOQNyBuQNyBvQN6AvEHegLwBeQPyBuQNyBvkDcgbkDcgb0DegLzhZFflw+/3e7Pb8fX1Ffm/z3fy+apST6FyryrXPPNuzLzPVm/wcg7IG5A3IG9A3oC8Qd6AvIGBrr4/nZoAe5aaalpxmqpvLi01eXbab9LqDV7OAXkD8gbkDcgbkDfIG5A3MNCV+senTSb1XXPf991v37LTfpNWb/ByDsgbkDcgb0DegLxB3oC8gYEut+C7zJzxqux59qxvv7QV5w6t3oC8AXkD8gZ5A/IG5A3IG5A38CFTawvom4c7bdLO6g3IG5A3IG9A3oC8Qd6AvAF5A3GxqbUVZ4/6pqlmTo+lzh5N/Tb2m4ezeoOXc0DegLwBeQPyBuQN8gbkDQzUOLU2cxIrpTKnteJnn6X+72m/Sas3yBuQNyBvQN6AvAF5g7wBeQMDve77dhe+RWoiasUJMKd8Wr0BeQPyBnkD8gbkDcgbkDcgbzhWaa+11ERUZU7r2cwJsL7v66q+6wlavQF5A/IG5A3yBuQNyBuQNyBv4EOlqbWZc0uVa+777H5mPt+Zk4Wpv2z1Bi/ngLwBeQPyBuQNyBvkDcgbGOja7yulZun6ZtpSZ4/22W/Ps5nnpVq9wcs5IG9A3oC8AXkD8gZ5A/IGBnrd9/3fH17xLM4+qXm4FefwUndy5lMwtQbIG5A3yBuQNyBvQN6AvAF5w1E23GstNcXVd0Zkajow9X/7pM7xrNxnJ4QC8gZ5A/IG5A3IG5A3IG+QN7CZxr3WVtwhbMVpqr5ndNrTt3oD8gbkDcgbkDcgb5A3IG9A3sAPiE2tVZw2W7biVfVdc2oOL8Vea4C8Qd6AvAF5A/IG5A3IG+QNbCZ2Qmjq9MmZJzn23cmZJ3VWrHj2aOqXY/UGL+eAvAF5A/IG5A3IG+QNyBsYKDa1ltoTK7WrWd9sWd8U18yr6ntGVm9A3oC8AXkD8gbkDfIG5A3IG/gBpRNCK2aeiZmy4mzZzKcw805WrtkJoYC8Qd6AvAF5A/IG5A3IG+QNbKa011pqqmm/UyD3O7e0T9/TT82lWb0BeQPyBnkD8gbkDcgbkDcgbzhKaWqtbyJq5s5VFakzMVfce+y034bVG5A3IG+QNyBvQN6AvAF5A/KGo5ROCF3xzEQnSM6X2pls5tO3egPyBnkD8gbkDcgbkDcgb5A3sJnS1NppKpNJfdNyqe9bueaZdyP1fPu+r9UbvJwD8gbkDcgbkDcgb5A3IG9goNIJoTP3xKp4nhDq223r+bMr7rWWmgCbeW5p6qqs3uDlHJA3IG9A3oC8AXmDvAF5AwNdfX96xWmqymdnzi2l9gBLTTTOvJNOCAXkDcgb5A3IG5A3IG9A3oC8gb+u1D+eeaJi5S/3faPKxFvlblR2gFvxl5P6XVm9AXkD8gZ5A/IG5A3IG5A3IG84yuUWfG7miah9u7itOKe14tN3Qiggb0DeIG9A3oC8AXkD8gbkDUcxtfYP+vYt67PiqaapabmZp6lW7obVG7ycA/IG5A3IG5A3IG+QNyBvYKDY1Npp+3j1nS46c8Yr9X1n7oiWmv+zeoOXc0DegLwBeQPyBuQN8gbkDQzUOLU28zzNFb9Rao+3mZNnfRNg+/1ird7g5RyQNyBvQN6AvAF5g7wBeQMDve77dhfA6g3IG5A3IG9A3oC8Qd6AvAF5A/IG5A3IG+QNyBuQNyBvQN6AvEHewG7+AEn1A0bPQj9rAAAAAElFTkSuQmCC" alt="Scan for Rover quote" width="72" height="72">
+      <img src="data:image/png;base64,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" alt="Scan for Rover quote" width="72" height="72">
       <div class="hero-qr-label">Scan to<br>build online</div>
     </div>
     <div class="seq-logo">
@@ -221,6 +235,12 @@ body{font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--c
       </div>
     </div>
 
+    <!-- DETAILS GATE NOTICE -->
+    <div class="lock-notice" id="lock-notice"><span class="lk-ico">&#128274;</span><span id="lock-text">Enter your details above to unlock model selection &amp; live pricing &mdash; it only takes a moment, and lets our team help you build the perfect Rover.</span></div>
+
+    <!-- BUILD SECTION (locked until details complete) -->
+    <div id="build-section" class="locked">
+    <div class="build-lock" id="build-lock"><div class="bl-card"><div class="bl-ico">&#128274;</div><div class="bl-t">Enter your details to start building</div><div class="bl-d">Add your name, email, phone, postcode and tow vehicle above to unlock model selection, options and live pricing.</div><div class="bl-arrow">&#9650;&nbsp; Your details up top</div></div></div>
     <!-- STEP 2: Choose Model -->
     <div class="step">
       <div class="step-hd"><div class="step-num">2</div><div><h2>Choose Your Model</h2><p>Select chassis and specification level</p></div></div>
@@ -300,6 +320,8 @@ body{font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--c
 
       </div>
     </div>
+
+    </div><!-- /build-section -->
 
     <div class="submit-wrap">
       <button type="submit" id="submit-btn">📩 &nbsp;Send My Quote Request to SEQ Campers</button>
@@ -450,9 +472,41 @@ function updateSummary() {
   document.getElementById('s-total').textContent = selectedModel ? '$'+total.toLocaleString() : '—';
 }
 
-['firstName','lastName','vehicle'].forEach(id => {
-  document.getElementById(id).addEventListener('input', updateSummary);
+const GATE_FIELDS=['firstName','lastName','email','phone','postcode','vehicle'];
+function detailsComplete(){
+  for(const id of GATE_FIELDS){ if(!document.getElementById(id).value.trim()) return false; }
+  const em=document.getElementById('email').value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return false;
+  return true;
+}
+function applyConstraints(m){
+  if(!m) return;
+  const isUltra=m.includes('ultra');
+  ultraIncludes.forEach(id => { const c=document.getElementById(id); if(c) c.disabled=isUltra; });
+  if(m.includes('sl')){ const ab=document.getElementById('chk-airbag'); if(ab) ab.disabled=true; }
+}
+function refreshLock(){
+  const ok=detailsComplete();
+  const bs=document.getElementById('build-section');
+  const ln=document.getElementById('lock-notice');
+  const lt=document.getElementById('lock-text');
+  bs.classList.toggle('locked',!ok);
+  // hard-disable every control in the build area until details are complete (blocks mouse AND keyboard)
+  bs.querySelectorAll('input').forEach(i => { i.disabled = !ok; });
+  if(ok) applyConstraints(selectedModel);
+  ln.style.display='flex';
+  if(ok){
+    ln.classList.add('unlocked');
+    lt.innerHTML='&#9989; Thanks! You can now choose your model and build your quote below.';
+  } else {
+    ln.classList.remove('unlocked');
+    lt.innerHTML='Enter your details above to unlock model selection &amp; live pricing &mdash; it only takes a moment, and lets our team help you build the perfect Rover.';
+  }
+}
+GATE_FIELDS.forEach(id => {
+  document.getElementById(id).addEventListener('input', () => { updateSummary(); refreshLock(); });
 });
+refreshLock();
 
 document.getElementById('quote-form').addEventListener('submit', function(e) {
   e.preventDefault();
