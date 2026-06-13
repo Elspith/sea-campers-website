@@ -134,6 +134,11 @@ body{font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--c
 /* ── SUBMIT ── */
 .submit-wrap{margin-top:28px;text-align:center}
 #submit-btn{background:var(--orange);color:#fff;border:none;padding:16px 48px;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;letter-spacing:.5px;box-shadow:0 4px 18px rgba(212,116,26,.4);transition:background .2s,transform .1s;width:100%}
+.unlock-bar{margin-top:16px;text-align:center}
+#unlock-btn{background:var(--orange);color:#fff;border:none;padding:15px 40px;border-radius:12px;font-size:15.5px;font-weight:800;cursor:pointer;letter-spacing:.5px;box-shadow:0 4px 18px rgba(212,116,26,.4);transition:background .2s,opacity .2s;width:100%}
+#unlock-btn:hover:not(:disabled){background:var(--rust)}
+#unlock-btn:disabled{background:#c9bda9;cursor:not-allowed;box-shadow:none}
+.unlock-hint{font-size:12px;color:var(--mid);margin-top:9px}
 #submit-btn:hover{background:var(--rust);transform:translateY(-1px)}
 #submit-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
 
@@ -199,6 +204,15 @@ body{font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--c
 </div>
 
 <div id="main-form">
+<!-- Netlify lead-capture form: sends a ROVER INQUIRY email the moment contact details are submitted -->
+<form name="rover-inquiry" data-netlify="true" netlify-honeypot="bot-field" hidden aria-hidden="true">
+  <input type="hidden" name="form-name" value="rover-inquiry">
+  <input type="hidden" name="subject">
+  <input type="text" name="First Name"><input type="text" name="Last Name">
+  <input type="email" name="Email"><input type="tel" name="Phone">
+  <input type="text" name="Postcode"><input type="text" name="Tow Vehicle">
+  <textarea name="Notes"></textarea><input name="bot-field">
+</form>
 <div class="container">
 
   <!-- Feature Strip -->
@@ -240,9 +254,15 @@ body{font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--c
     <!-- DETAILS GATE NOTICE -->
     <div class="lock-notice" id="lock-notice"><span class="lk-ico">&#128274;</span><span id="lock-text">Enter your details above to unlock model selection &amp; live pricing &mdash; it only takes a moment, and lets our team help you build the perfect Rover.</span></div>
 
+    <!-- UNLOCK / LEAD-CAPTURE BUTTON -->
+    <div class="unlock-bar" id="unlock-bar">
+      <button type="button" id="unlock-btn" disabled onclick="submitInquiry()">&#128233; &nbsp;Send My Details &amp; Start Building</button>
+      <div class="unlock-hint" id="unlock-hint">Fill in all your details above to continue.</div>
+    </div>
+
     <!-- BUILD SECTION (locked until details complete) -->
     <div id="build-section" class="locked">
-    <div class="build-lock" id="build-lock"><div class="bl-card"><div class="bl-ico">&#128274;</div><div class="bl-t">Enter your details to start building</div><div class="bl-d">Add your name, email, phone, postcode and tow vehicle above to unlock model selection, options and live pricing.</div><div class="bl-arrow">&#9650;&nbsp; Your details up top</div></div></div>
+    <div class="build-lock" id="build-lock"><div class="bl-card"><div class="bl-ico">&#128274;</div><div class="bl-t">Tell us who you are first</div><div class="bl-d">Fill in your details above and tap &ldquo;Send My Details &amp; Start Building&rdquo; to unlock model selection, options and live pricing.</div><div class="bl-arrow">&#9650;&nbsp; Your details up top</div></div></div>
     <!-- STEP 2: Choose Model -->
     <div class="step">
       <div class="step-hd"><div class="step-num">2</div><div><h2>Choose Your Model</h2><p>Select chassis and specification level</p></div></div>
@@ -504,6 +524,7 @@ function updateSummary() {
   document.getElementById('s-total').textContent = selectedModel ? '$'+total.toLocaleString() : '—';
 }
 
+let inquirySent=false;
 const GATE_FIELDS=['firstName','lastName','email','phone','postcode','vehicle'];
 function detailsComplete(){
   for(const id of GATE_FIELDS){ if(!document.getElementById(id).value.trim()) return false; }
@@ -512,22 +533,48 @@ function detailsComplete(){
   return true;
 }
 function refreshLock(){
-  const ok=detailsComplete();
+  const ready=detailsComplete();
+  const unlocked=inquirySent;
   const bs=document.getElementById('build-section');
   const ln=document.getElementById('lock-notice');
   const lt=document.getElementById('lock-text');
-  bs.classList.toggle('locked',!ok);
-  // hard-disable every control in the build area until details are complete (blocks mouse AND keyboard)
-  bs.querySelectorAll('input').forEach(i => { i.disabled = !ok; });
-  if(ok) refreshOptionStates();
+  const btn=document.getElementById('unlock-btn');
+  const hint=document.getElementById('unlock-hint');
+  bs.classList.toggle('locked',!unlocked);
+  // build stays fully disabled (mouse + keyboard) until the inquiry has been sent to SEQ
+  bs.querySelectorAll('input').forEach(i => { i.disabled = !unlocked; });
+  if(unlocked) refreshOptionStates();
   ln.style.display='flex';
-  if(ok){
+  if(unlocked){
     ln.classList.add('unlocked');
-    lt.innerHTML='&#9989; Thanks! You can now choose your model and build your quote below.';
+    const fn=document.getElementById('firstName').value.trim();
+    lt.innerHTML='&#9989; Got it'+(fn?', '+fn:'')+'! Your details are with the SEQ Campers team and <strong>we&rsquo;ll be in touch shortly</strong>. Build your Rover below &mdash; it helps us help you even faster.';
+    if(btn){ btn.disabled=true; btn.innerHTML='&#9989; &nbsp;Details Sent &mdash; We&rsquo;ll Be In Touch'; }
+    if(hint) hint.style.display='none';
   } else {
     ln.classList.remove('unlocked');
-    lt.innerHTML='Enter your details above to unlock model selection &amp; live pricing &mdash; it only takes a moment, and lets our team help you build the perfect Rover.';
+    lt.innerHTML='Enter your details above, then send them to us to unlock model selection &amp; live pricing &mdash; so our team can help you build the perfect Rover.';
+    if(btn) btn.disabled=!ready;
+    if(hint){ hint.style.display='block'; hint.textContent = ready ? "You're ready \u2014 tap the button to send your details and start building." : 'Fill in all your details above to continue.'; }
   }
+}
+
+function submitInquiry(){
+  if(!detailsComplete()){ refreshLock(); return; }
+  const btn=document.getElementById('unlock-btn');
+  btn.disabled=true; btn.innerHTML='Sending&hellip;';
+  const g=id=>document.getElementById(id).value.trim();
+  const data={
+    'form-name':'rover-inquiry',
+    'subject':'\uD83D\uDEFB ROVER INQUIRY \u2014 '+g('firstName')+' '+g('lastName'),
+    'First Name':g('firstName'),'Last Name':g('lastName'),'Email':g('email'),
+    'Phone':g('phone'),'Postcode':g('postcode'),'Tow Vehicle':g('vehicle'),'Notes':g('notes')
+  };
+  fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(data).toString()})
+   .then(() => { inquirySent=true; refreshLock();
+     document.getElementById('build-section').scrollIntoView({behavior:'smooth',block:'start'}); })
+   .catch(() => { btn.disabled=false; btn.innerHTML='&#128233; &nbsp;Send My Details &amp; Start Building';
+     alert('Sorry \u2014 we could not send your details just now. Please check your connection and try again, or email sales@seqcampers.com.au'); });
 }
 GATE_FIELDS.forEach(id => {
   document.getElementById(id).addEventListener('input', () => { updateSummary(); refreshLock(); });
