@@ -106,6 +106,9 @@ body{font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--c
 .or:last-child{border-bottom:none}
 .or:hover{background:rgba(212,116,26,.04)}
 .or.disabled{opacity:.38;pointer-events:none}
+.or.is-dep{pointer-events:none;background:rgba(196,89,26,0.05);border-radius:8px}
+.or.is-dep .or-lbl{color:var(--dark)}
+.or.is-dep input[type=checkbox]{opacity:.4}
 .or.is-incl{background:var(--green-bg);border-color:var(--green-border)}
 .or input[type=checkbox]{width:18px;height:18px;min-width:18px;accent-color:var(--orange);cursor:pointer;margin-top:2px}
 .or-lbl{flex:1;font-size:13px;font-weight:600;color:var(--dark)}
@@ -114,6 +117,8 @@ body{font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--c
 .incl-badge{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--olive);border:1px solid var(--olive);border-radius:10px;padding:2px 8px}
 .na-badge{font-size:9.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--mid);border:1px solid var(--mid);border-radius:10px;padding:2px 7px;white-space:nowrap}
 .dep-badge{font-size:9.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--rust);border:1px solid var(--rust);border-radius:10px;padding:2px 7px;white-space:nowrap}
+#qty-fans{padding:6px 9px;border:2px solid var(--border);border-radius:8px;background:var(--cream);font-size:13px;font-weight:700;color:var(--dark);cursor:pointer}
+#qty-fans:disabled{opacity:.5;cursor:not-allowed}
 
 /* ── SUMMARY ── */
 .summary-box{background:var(--dark);border-radius:16px;padding:24px;color:#fff;position:sticky;top:18px}
@@ -302,43 +307,46 @@ body{font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--c
       <div class="step-bd">
 
         <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mid);margin-bottom:12px">Comfort &amp; Power Upgrades</div>
-        <div class="or" onclick="toggle('chk-redarc')"><input type="checkbox" id="chk-redarc" data-price="3700" data-label="REDARC RedVision Power System"><div class="or-lbl">REDARC RedVision Power System<small>Smartphone app control · Nationwide RedNetwork support</small></div><div class="or-price" id="pr-redarc">+ $3,700</div></div>
-        <div class="or" onclick="toggle('chk-ac')"><input type="checkbox" id="chk-ac" data-price="3800" data-label="240V Reverse-Cycle Air Conditioning"><div class="or-lbl">240V Reverse-Cycle Air Conditioning<small>Roof-mounted · can run off-grid with 2000W inverter</small></div><div class="or-price" id="pr-ac">+ $3,800</div></div>
-        <div class="or" onclick="toggle('chk-300ah')"><input type="checkbox" id="chk-300ah" data-price="1900" data-label="Upgrade to 300Ah Lithium Battery"><div class="or-lbl">Upgrade to 300Ah Lithium Battery<small>More off-grid power capacity</small></div><div class="or-price" id="pr-300ah">+ $1,900</div></div>
-        <div class="or" onclick="toggle('chk-240v')"><input type="checkbox" id="chk-240v" data-price="1200" data-label="240V Shore Power System"><div class="or-lbl">240V Shore Power System<small>15A inlet · kitchen &amp; bedroom double power outlets</small></div><div class="or-price" id="pr-240v">+ $1,200</div></div>
-        <div class="or" onclick="toggle('chk-inverter-basic')"><input type="checkbox" id="chk-inverter-basic" data-price="1600" data-label="2000W 12V Inverter (Intrepid)"><div class="or-lbl">2000W 12V Inverter<small>Intrepid models · run appliances off battery</small></div><div class="or-price" id="pr-inverter-basic">+ $1,600</div></div>
-        <div class="or" onclick="toggle('chk-inverter-ultra')"><input type="checkbox" id="chk-inverter-ultra" data-price="2300" data-label="2000W REDARC Inverter (Ultra)"><div class="or-lbl">2000W REDARC Inverter<small>Ultra models only</small></div><div class="or-price" id="pr-inverter-ultra">+ $2,300</div></div>
-        <div class="or" onclick="toggle('chk-solar-portable')"><input type="checkbox" id="chk-solar-portable" data-price="950" data-label="Portable 220W Solar Panels"><div class="or-lbl">Portable 220W Solar Panels<small>Top up batteries on the move</small></div><div class="or-price" id="pr-solar-portable">+ $950</div></div>
-        <div class="or" onclick="toggle('chk-diesel-heater')"><input type="checkbox" id="chk-diesel-heater" data-price="4900" data-label="Diesel Hot Water Heater + Shower Kit"><div class="or-lbl">Diesel Hot Water Heater + Shower Kit<small>Darche drop-down shower tent · hot &amp; cold mixer · shower rose</small></div><div class="or-price" id="pr-diesel-heater">+ $4,900</div></div>
-        <div class="or" onclick="toggle('chk-diesel-air')"><input type="checkbox" id="chk-diesel-air" data-price="3150" data-label="Diesel Air Heater"><div class="or-lbl">Diesel Air Heater<small>Fitted to diesel water heater — includes cabinetry change</small></div><div class="or-price" id="pr-diesel-air">+ $3,150</div></div>
-        <div class="or" onclick="toggle('chk-kitchen-wall')"><input type="checkbox" id="chk-kitchen-wall" data-price="900" data-label="Kitchen Wall & Roof Kit"><div class="or-lbl">Kitchen Wall &amp; Roof Kit<small>Tailgate cover + two polyester walls for weather protection</small></div><div class="or-price" id="pr-kitchen-wall">+ $900</div></div>
-        <div class="or" onclick="toggle('chk-stoneguard')"><input type="checkbox" id="chk-stoneguard" data-price="900" data-label="Stone Guard"><div class="or-lbl">Stone Guard<small>Required with diesel heater option to mount diesel tank</small></div><div class="or-price" id="pr-stoneguard">+ $900</div></div>
+        <div class="or" onclick="toggle(event,'chk-redarc')"><input type="checkbox" id="chk-redarc" data-price="3700" data-label="REDARC RedVision Power System"><div class="or-lbl">REDARC RedVision Power System<small>Smartphone app control · Nationwide RedNetwork support</small></div><div class="or-price" id="pr-redarc">+ $3,700</div></div>
+        <div class="or" onclick="toggle(event,'chk-ac')"><input type="checkbox" id="chk-ac" data-price="3800" data-label="240V Reverse-Cycle Air Conditioning"><div class="or-lbl">240V Reverse-Cycle Air Conditioning<small>Roof-mounted · can run off-grid with 2000W inverter</small></div><div class="or-price" id="pr-ac">+ $3,800</div></div>
+        <div class="or" onclick="toggle(event,'chk-300ah')"><input type="checkbox" id="chk-300ah" data-price="1900" data-label="Upgrade to 300Ah Lithium Battery"><div class="or-lbl">Upgrade to 300Ah Lithium Battery<small>More off-grid power capacity</small></div><div class="or-price" id="pr-300ah">+ $1,900</div></div>
+        <div class="or" onclick="toggle(event,'chk-600ah')"><input type="checkbox" id="chk-600ah" data-price="1850" data-label="Upgrade to 600Ah Lithium Battery"><div class="or-lbl">Upgrade to 600Ah Lithium Battery<small>Maximum off-grid capacity &middot; on top of the 300Ah upgrade</small></div><div class="or-price" id="pr-600ah">+ $1,850</div></div>
+        <div class="or" onclick="toggle(event,'chk-manager')"><input type="checkbox" id="chk-manager" data-price="800" data-label="REDARC Manager 50"><div class="or-lbl">REDARC Manager 50<small>Battery management &middot; recommended with 600Ah</small></div><div class="or-price" id="pr-manager">+ $800</div></div>
+        <div class="or" onclick="toggle(event,'chk-240v')"><input type="checkbox" id="chk-240v" data-price="1200" data-label="240V Shore Power System"><div class="or-lbl">240V Shore Power System<small>15A inlet · kitchen &amp; bedroom double power outlets</small></div><div class="or-price" id="pr-240v">+ $1,200</div></div>
+        <div class="or" onclick="toggle(event,'chk-inverter-basic')"><input type="checkbox" id="chk-inverter-basic" data-price="1600" data-label="2000W 12V Inverter (Intrepid)"><div class="or-lbl">2000W 12V Inverter<small>Intrepid models · run appliances off battery</small></div><div class="or-price" id="pr-inverter-basic">+ $1,600</div></div>
+        <div class="or" onclick="toggle(event,'chk-inverter-ultra')"><input type="checkbox" id="chk-inverter-ultra" data-price="2300" data-label="2000W REDARC Inverter (Ultra)"><div class="or-lbl">2000W REDARC Inverter<small>Ultra models only</small></div><div class="or-price" id="pr-inverter-ultra">+ $2,300</div></div>
+        <div class="or" onclick="toggle(event,'chk-solar-portable')"><input type="checkbox" id="chk-solar-portable" data-price="950" data-label="Portable 220W Solar Panels"><div class="or-lbl">Portable 220W Solar Panels<small>Top up batteries on the move</small></div><div class="or-price" id="pr-solar-portable">+ $950</div></div>
+        <div class="or" onclick="toggle(event,'chk-diesel-heater')"><input type="checkbox" id="chk-diesel-heater" data-price="4900" data-label="Diesel Hot Water Heater + Shower Kit"><div class="or-lbl">Diesel Hot Water Heater + Shower Kit<small>Darche drop-down shower tent · hot &amp; cold mixer · shower rose</small></div><div class="or-price" id="pr-diesel-heater">+ $4,900</div></div>
+        <div class="or" onclick="toggle(event,'chk-diesel-air')"><input type="checkbox" id="chk-diesel-air" data-price="3150" data-label="Diesel Air Heater"><div class="or-lbl">Diesel Air Heater<small>Fitted to diesel water heater — includes cabinetry change</small></div><div class="or-price" id="pr-diesel-air">+ $3,150</div></div>
+        <div class="or" onclick="toggle(event,'chk-kitchen-wall')"><input type="checkbox" id="chk-kitchen-wall" data-price="900" data-label="Kitchen Wall & Roof Kit"><div class="or-lbl">Kitchen Wall &amp; Roof Kit<small>Tailgate cover + two polyester walls for weather protection</small></div><div class="or-price" id="pr-kitchen-wall">+ $900</div></div>
+        <div class="or" onclick="toggle(event,'chk-stoneguard')"><input type="checkbox" id="chk-stoneguard" data-price="900" data-label="Stone Guard"><div class="or-lbl">Stone Guard<small>Required with diesel heater option to mount diesel tank</small></div><div class="or-price" id="pr-stoneguard">+ $900</div></div>
 
         <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mid);margin:20px 0 12px">Awnings &amp; Outdoor Living</div>
-        <div class="or" onclick="toggle('chk-awning-walls')"><input type="checkbox" id="chk-awning-walls" data-price="800" data-label="Awning Walls for Darche 180 Awning"><div class="or-lbl">Awning Walls for Darche 180 Awning<small>Enclose your alfresco area</small></div><div class="or-price" id="pr-awning-walls">+ $800</div></div>
-        <div class="or" onclick="toggle('chk-side-awning')"><input type="checkbox" id="chk-side-awning" data-price="1800" data-label="Darche 2m Eclipse Side Awning with LED Lights"><div class="or-lbl">Darche 2m Eclipse Side Awning with LED Lights<small>Driver side · adds extra shade</small></div><div class="or-price" id="pr-side-awning">+ $1,800</div></div>
-        <div class="or" onclick="toggle('chk-annex')"><input type="checkbox" id="chk-annex" data-price="900" data-label="Darche Retreat Annex"><div class="or-lbl">Darche Retreat Annex<small>Requires awning moved forward + kitchen wall kit</small></div><div class="or-price" id="pr-annex">+ $900</div></div>
-        <div class="or" onclick="toggle('chk-draft-skirt')"><input type="checkbox" id="chk-draft-skirt" data-price="1150" data-label="Draft Skirt (Side & Back)"><div class="or-lbl">Draft Skirt — Side &amp; Back<small>Heavy duty Australian-made vinyl · not available on SPORTS</small></div><div class="or-price" id="pr-draft-skirt">+ $1,150</div></div>
+        <div class="or" onclick="toggle(event,'chk-awning-walls')"><input type="checkbox" id="chk-awning-walls" data-price="800" data-label="Awning Walls for Darche 180 Awning"><div class="or-lbl">Awning Walls for Darche 180 Awning<small>Enclose your alfresco area</small></div><div class="or-price" id="pr-awning-walls">+ $800</div></div>
+        <div class="or" onclick="toggle(event,'chk-side-awning')"><input type="checkbox" id="chk-side-awning" data-price="1800" data-label="Darche 2m Eclipse Side Awning with LED Lights"><div class="or-lbl">Darche 2m Eclipse Side Awning with LED Lights<small>Driver side · adds extra shade</small></div><div class="or-price" id="pr-side-awning">+ $1,800</div></div>
+        <div class="or" onclick="toggle(event,'chk-annex')"><input type="checkbox" id="chk-annex" data-price="900" data-label="Darche Retreat Annex"><div class="or-lbl">Darche Retreat Annex<small>Requires awning moved forward + kitchen wall kit</small></div><div class="or-price" id="pr-annex">+ $900</div></div>
+        <div class="or" onclick="toggle(event,'chk-draft-skirt')"><input type="checkbox" id="chk-draft-skirt" data-price="1150" data-label="Draft Skirt (Side & Back)"><div class="or-lbl">Draft Skirt — Side &amp; Back<small>Heavy duty Australian-made vinyl · not available on SPORTS</small></div><div class="or-price" id="pr-draft-skirt">+ $1,150</div></div>
+        <div class="or" onclick="toggle(event,'chk-woodbox')"><input type="checkbox" id="chk-woodbox" data-price="650" data-label="Woodbox"><div class="or-lbl">Woodbox<small>Secure storage box for firewood</small></div><div class="or-price" id="pr-woodbox">+ $650</div></div>
 
         <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mid);margin:20px 0 12px">Suspension &amp; Towing</div>
-        <div class="or" onclick="toggle('chk-airbag')"><input type="checkbox" id="chk-airbag" data-price="4990" data-label="Airbag Suspension Upgrade"><div class="or-lbl">Airbag Suspension Upgrade<small>Manual height adjust · compressor &amp; remote · not available on LITE</small></div><div class="or-price" id="pr-airbag">+ $4,990</div></div>
-        <div class="or" onclick="toggle('chk-brake-ctrl')"><input type="checkbox" id="chk-brake-ctrl" data-price="1300" data-label="Electric Brake Controller (Trailer Mounted)"><div class="or-lbl">Electric Brake Controller — Trailer Mounted<small>No remote</small></div><div class="or-price" id="pr-brake-ctrl">+ $1,300</div></div>
-        <div class="or" onclick="toggle('chk-brake-remote')"><input type="checkbox" id="chk-brake-remote" data-price="250" data-label="Electric Brakes Remote Control"><div class="or-lbl">Electric Brakes Remote Control</div><div class="or-price" id="pr-brake-remote">+ $250</div></div>
+        <div class="or" onclick="toggle(event,'chk-airbag')"><input type="checkbox" id="chk-airbag" data-price="4990" data-label="Airbag Suspension Upgrade"><div class="or-lbl">Airbag Suspension Upgrade<small>Manual height adjust · compressor &amp; remote · not available on LITE</small></div><div class="or-price" id="pr-airbag">+ $4,990</div></div>
+        <div class="or" onclick="toggle(event,'chk-brake-ctrl')"><input type="checkbox" id="chk-brake-ctrl" data-price="1300" data-label="Electric Brake Controller (Trailer Mounted)"><div class="or-lbl">Electric Brake Controller — Trailer Mounted<small>No remote</small></div><div class="or-price" id="pr-brake-ctrl">+ $1,300</div></div>
+        <div class="or" onclick="toggle(event,'chk-brake-remote')"><input type="checkbox" id="chk-brake-remote" data-price="250" data-label="Electric Brakes Remote Control"><div class="or-lbl">Electric Brakes Remote Control</div><div class="or-price" id="pr-brake-remote">+ $250</div></div>
 
         <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mid);margin:20px 0 12px">Entertainment &amp; Tech</div>
-        <div class="or" onclick="toggle('chk-tv')"><input type="checkbox" id="chk-tv" data-price="900" data-label='24" Smart HD TV'><div class="or-lbl">24" Smart HD TV<small>Wi-Fi, USB, HDMI inputs · removable mounts · no aerial</small></div><div class="or-price" id="pr-tv">+ $900</div></div>
-        <div class="or" onclick="toggle('chk-camera')"><input type="checkbox" id="chk-camera" data-price="1300" data-label="Furrion Rear-Vision Camera + 7" Display"><div class="or-lbl">Furrion Rear-Vision Camera + 7" Display<small>Wireless · fitted on rear door</small></div><div class="or-price" id="pr-camera">+ $1,300</div></div>
-        <div class="or" onclick="toggle('chk-fans')"><input type="checkbox" id="chk-fans" data-price="450" data-label="Sirocco Fan (each)"><div class="or-lbl">Sirocco Fan<small>Mounted and wired in · $450 each</small></div><div class="or-price" id="pr-fans">+ $450</div></div>
-        <div class="or" onclick="toggle('chk-water-filter')"><input type="checkbox" id="chk-water-filter" data-price="250" data-label="Water Filter (Silver GAC Carbon)"><div class="or-lbl">Water Filter — Silver GAC Carbon Filter</div><div class="or-price" id="pr-water-filter">+ $250</div></div>
-        <div class="or" onclick="toggle('chk-wine')"><input type="checkbox" id="chk-wine" data-price="300" data-label="Wine Bottle Storage Cupboard"><div class="or-lbl">Wine Bottle Storage Cupboard<small>Soft foam sleeves protect bottles from breakage</small></div><div class="or-price" id="pr-wine">+ $300</div></div>
+        <div class="or" onclick="toggle(event,'chk-tv')"><input type="checkbox" id="chk-tv" data-price="900" data-label='24" Smart HD TV'><div class="or-lbl">24" Smart HD TV<small>Wi-Fi, USB, HDMI inputs · removable mounts · no aerial</small></div><div class="or-price" id="pr-tv">+ $900</div></div>
+        <div class="or" onclick="toggle(event,'chk-camera')"><input type="checkbox" id="chk-camera" data-price="1300" data-label="Furrion Rear-Vision Camera + 7" Display"><div class="or-lbl">Furrion Rear-Vision Camera + 7" Display<small>Wireless · fitted on rear door</small></div><div class="or-price" id="pr-camera">+ $1,300</div></div>
+        <div class="or" style="cursor:default"><div class="or-lbl">Sirocco Fans<small>Mounted and wired in &middot; $450 each &middot; choose up to 2</small></div><div class="or-price" style="display:flex;align-items:center;gap:6px"><span style="font-size:11px;color:var(--mid);font-weight:600">Qty</span><select id="qty-fans" onchange="updateSummary()"><option value="0">0</option><option value="1">1</option><option value="2">2</option></select></div></div>
+        <div class="or" onclick="toggle(event,'chk-water-filter')"><input type="checkbox" id="chk-water-filter" data-price="250" data-label="Water Filter (Silver GAC Carbon)"><div class="or-lbl">Water Filter — Silver GAC Carbon Filter</div><div class="or-price" id="pr-water-filter">+ $250</div></div>
+        <div class="or" onclick="toggle(event,'chk-wine')"><input type="checkbox" id="chk-wine" data-price="300" data-label="Wine Bottle Storage Cupboard"><div class="or-lbl">Wine Bottle Storage Cupboard<small>Soft foam sleeves protect bottles from breakage</small></div><div class="or-price" id="pr-wine">+ $300</div></div>
 
         <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mid);margin:20px 0 12px">Bike &amp; Gear Carrying</div>
-        <div class="or" onclick="toggle('chk-bikerack')"><input type="checkbox" id="chk-bikerack" data-price="1380" data-label="GripSport 2-Bike Rack (Front, E-Bike Suitable)"><div class="or-lbl">GripSport 2-Bike Rack — Front Mounted<small>Suitable for e-bikes</small></div><div class="or-price" id="pr-bikerack">+ $1,380</div></div>
-        <div class="or" onclick="toggle('chk-roofrack')"><input type="checkbox" id="chk-roofrack" data-price="450" data-label="Rhino Aero Roof Racks 1550mm (for A/C models)"><div class="or-lbl">Rhino Aero Roof Racks — 1550mm Black<small>For Rovers with air conditioning · 50kg max rated</small></div><div class="or-price" id="pr-roofrack">+ $450</div></div>
+        <div class="or" onclick="toggle(event,'chk-bikerack')"><input type="checkbox" id="chk-bikerack" data-price="1380" data-label="GripSport 2-Bike Rack (Front, E-Bike Suitable)"><div class="or-lbl">GripSport 2-Bike Rack — Front Mounted<small>Suitable for e-bikes</small></div><div class="or-price" id="pr-bikerack">+ $1,380</div></div>
+        <div class="or" onclick="toggle(event,'chk-roofrack')"><input type="checkbox" id="chk-roofrack" data-price="450" data-label="Rhino Aero Roof Racks 1550mm (for A/C models)"><div class="or-lbl">Rhino Aero Roof Racks — 1550mm Black<small>For Rovers with air conditioning · 50kg max rated</small></div><div class="or-price" id="pr-roofrack">+ $450</div></div>
 
         <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mid);margin:20px 0 12px">Weather Shields</div>
-        <div class="or" onclick="toggle('chk-shield-p')"><input type="checkbox" id="chk-shield-p" data-price="150" data-label="Front Curved Vinyl Weather Shield (Passenger Side)"><div class="or-lbl">Front Curved Vinyl Weather Shield — Passenger Side</div><div class="or-price" id="pr-shield-p">+ $150</div></div>
-        <div class="or" onclick="toggle('chk-shield-d')"><input type="checkbox" id="chk-shield-d" data-price="150" data-label="Front Curved Vinyl Weather Shield (Driver Side)"><div class="or-lbl">Front Curved Vinyl Weather Shield — Driver Side</div><div class="or-price" id="pr-shield-d">+ $150</div></div>
+        <div class="or" onclick="toggle(event,'chk-shield-p')"><input type="checkbox" id="chk-shield-p" data-price="150" data-label="Front Curved Vinyl Weather Shield (Passenger Side)"><div class="or-lbl">Front Curved Vinyl Weather Shield — Passenger Side</div><div class="or-price" id="pr-shield-p">+ $150</div></div>
+        <div class="or" onclick="toggle(event,'chk-shield-d')"><input type="checkbox" id="chk-shield-d" data-price="150" data-label="Front Curved Vinyl Weather Shield (Driver Side)"><div class="or-lbl">Front Curved Vinyl Weather Shield — Driver Side</div><div class="or-price" id="pr-shield-d">+ $150</div></div>
 
       </div>
     </div>
@@ -428,7 +436,7 @@ function setOptState(id, state, note){
   const row = c.closest('.or');
   const el = document.getElementById('pr-'+id.replace('chk-',''));
   const pr = parseFloat(c.dataset.price)||0;
-  row.classList.remove('disabled','is-incl');
+  row.classList.remove('disabled','is-incl','is-dep');
   if(state==='incl'){
     row.classList.add('is-incl'); c.disabled=true; c.checked=false;
     if(el) el.innerHTML='<span class="incl-badge">INCLUDED</span>';
@@ -436,7 +444,7 @@ function setOptState(id, state, note){
     row.classList.add('disabled'); c.disabled=true; c.checked=false;
     if(el) el.innerHTML='<span class="na-badge">'+(note||'N/A')+'</span>';
   } else if(state==='dep'){
-    row.classList.add('disabled'); c.disabled=true; c.checked=false;
+    row.classList.add('is-dep'); c.disabled=true; c.checked=false;
     if(el) el.innerHTML='<span class="dep-badge">'+(note||'Locked')+'</span>';
   } else { // avail
     c.disabled=false;
@@ -462,6 +470,11 @@ function refreshOptionStates(){
   setOptState('chk-inverter-ultra', redarcOn ? 'avail' : 'dep', 'Add RedVision');
   // Airbag suspension — not available on Super Lite chassis
   if(m.lite) setOptState('chk-airbag','na','Not on Lite');
+  // 600Ah battery sits on top of the 300Ah upgrade (300Ah is standard on Ultra)
+  const has300 = m.ultra || document.getElementById('chk-300ah').checked;
+  setOptState('chk-600ah', has300 ? 'avail' : 'dep', 'Add 300Ah');
+  // REDARC Manager 50 requires the RedVision power system
+  setOptState('chk-manager', redarcOn ? 'avail' : 'dep', 'Add RedVision');
 }
 
 function selectModel(m, price) {
@@ -470,20 +483,35 @@ function selectModel(m, price) {
   document.getElementById('card-'+m).classList.add('sel');
   // Reset every option to a clean, available, unchecked state
   document.querySelectorAll('.or input[type=checkbox]').forEach(c => { c.checked=false; setOptState(c.id,'avail'); });
+  const qf=document.getElementById('qty-fans'); if(qf) qf.value='0';
   refreshOptionStates();
   updateSummary();
 }
 
-function toggle(id) {
+function toggle(ev, id) {
   const c = document.getElementById(id);
-  if(c && !c.disabled) { c.checked = !c.checked; refreshOptionStates(); updateSummary(); }
+  if(!c || c.disabled) return;
+  // If the click landed on the checkbox itself, the browser already flipped it.
+  // Only flip manually when the click came from elsewhere on the row (label/price).
+  if(!ev || ev.target !== c) { c.checked = !c.checked; }
+  refreshOptionStates(); updateSummary();
 }
 
+function fanCount() {
+  const s = document.getElementById('qty-fans');
+  return (s && !s.disabled) ? (parseInt(s.value,10)||0) : 0;
+}
+function fanLine() {
+  const n = fanCount();
+  if(n<=0) return null;
+  return { label:'Sirocco Fan'+(n>1?'s':'')+' \u00d7 '+n, price:450*n };
+}
 function calcOptionsTotal() {
   let t = 0;
   document.querySelectorAll('.or input[type=checkbox]').forEach(c => {
     if(c.checked && !c.disabled) t += parseFloat(c.dataset.price)||0;
   });
+  const fl = fanLine(); if(fl) t += fl.price;
   return t;
 }
 
@@ -510,6 +538,7 @@ function updateSummary() {
   document.querySelectorAll('.or input[type=checkbox]').forEach(c => {
     if(c.checked&&!c.disabled) { const p=parseFloat(c.dataset.price)||0; if(p>0) lines.push({label:c.dataset.label||c.name,price:p}); }
   });
+  { const fl=fanLine(); if(fl) lines.push(fl); }
   if(lines.length>0) {
     const hdr=document.createElement('div'); hdr.className='sum-line'; hdr.style='margin-top:6px';
     hdr.innerHTML='<span class="s-lbl" style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase">Options</span><span></span>';
@@ -542,7 +571,7 @@ function refreshLock(){
   const hint=document.getElementById('unlock-hint');
   bs.classList.toggle('locked',!unlocked);
   // build stays fully disabled (mouse + keyboard) until the inquiry has been sent to SEQ
-  bs.querySelectorAll('input').forEach(i => { i.disabled = !unlocked; });
+  bs.querySelectorAll('input,select').forEach(i => { i.disabled = !unlocked; });
   if(unlocked) refreshOptionStates();
   ln.style.display='flex';
   if(unlocked){
@@ -606,6 +635,7 @@ document.getElementById('quote-form').addEventListener('submit', function(e) {
   document.querySelectorAll('.or input[type=checkbox]').forEach(c => {
     if(c.checked&&!c.disabled) optLines.push((c.dataset.label||c.name)+' ($'+(parseFloat(c.dataset.price)||0).toLocaleString()+')');
   });
+  { const fl=fanLine(); if(fl) optLines.push(fl.label+' ($'+fl.price.toLocaleString()+')'); }
   document.getElementById('hid-options').value = optLines.join('; ') || 'None';
   document.getElementById('hid-total').value = '$'+total.toLocaleString()+' (incl. $3,500 dealer delivery, subj. to fuel surcharge)';
 
@@ -632,6 +662,7 @@ document.getElementById('quote-form').addEventListener('submit', function(e) {
         buildHTML+=`<div class="qc-line"><span style="padding-left:14px">${c.dataset.label||c.name}</span><span class="ql-price">+ $${p.toLocaleString()}</span></div>`;
       }
     });
+    { const fl=fanLine(); if(fl) buildHTML+=`<div class="qc-line"><span style="padding-left:14px">${fl.label}</span><span class="ql-price">+ $${fl.price.toLocaleString()}</span></div>`; }
     buildHTML+=`<div class="qc-line"><span>Dealer Delivery</span><span class="ql-price">+ $3,500</span></div>`;
     document.getElementById('qc-build-lines').innerHTML=buildHTML;
     document.getElementById('qc-total-val').textContent='$'+total.toLocaleString();
