@@ -112,6 +112,8 @@ body{font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--c
 .or-lbl small{display:block;font-size:11px;color:var(--mid);font-weight:400;margin-top:1px}
 .or-price{font-size:12px;font-weight:700;color:var(--orange);white-space:nowrap;margin-top:2px;min-width:80px;text-align:right}
 .incl-badge{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--olive);border:1px solid var(--olive);border-radius:10px;padding:2px 8px}
+.na-badge{font-size:9.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--mid);border:1px solid var(--mid);border-radius:10px;padding:2px 7px;white-space:nowrap}
+.dep-badge{font-size:9.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--rust);border:1px solid var(--rust);border-radius:10px;padding:2px 7px;white-space:nowrap}
 
 /* ── SUMMARY ── */
 .summary-box{background:var(--dark);border-radius:16px;padding:24px;color:#fff;position:sticky;top:18px}
@@ -391,40 +393,70 @@ const modelNames = {
   'sl-intrepid':'Rover 2 Super Lite — Intrepid',
   'sl-ultra':'Rover 2 Super Lite — Ultra'
 };
-const ultraIncludes = ['chk-redarc','chk-ac','chk-300ah','chk-240v','chk-solar-portable','chk-diesel-heater','chk-stoneguard','chk-kitchen-wall'];
+const MODELS = {
+  'xt-intrepid':{ultra:false,lite:false},
+  'xt-ultra'  :{ultra:true ,lite:false},
+  'sl-intrepid':{ultra:false,lite:true},
+  'sl-ultra'  :{ultra:true ,lite:true}
+};
+// Standard inclusions on Ultra models (per the Ultra spec card)
+const includedOnUltra = ['chk-redarc','chk-300ah','chk-ac','chk-240v','chk-diesel-heater','chk-stoneguard','chk-solar-portable','chk-kitchen-wall'];
+
+// Set one option row's state: 'avail' | 'incl' | 'na' | 'dep'
+function setOptState(id, state, note){
+  const c = document.getElementById(id); if(!c) return;
+  const row = c.closest('.or');
+  const el = document.getElementById('pr-'+id.replace('chk-',''));
+  const pr = parseFloat(c.dataset.price)||0;
+  row.classList.remove('disabled','is-incl');
+  if(state==='incl'){
+    row.classList.add('is-incl'); c.disabled=true; c.checked=false;
+    if(el) el.innerHTML='<span class="incl-badge">INCLUDED</span>';
+  } else if(state==='na'){
+    row.classList.add('disabled'); c.disabled=true; c.checked=false;
+    if(el) el.innerHTML='<span class="na-badge">'+(note||'N/A')+'</span>';
+  } else if(state==='dep'){
+    row.classList.add('disabled'); c.disabled=true; c.checked=false;
+    if(el) el.innerHTML='<span class="dep-badge">'+(note||'Locked')+'</span>';
+  } else { // avail
+    c.disabled=false;
+    if(el) el.innerHTML = pr>0 ? '+ $'+pr.toLocaleString() : '';
+  }
+}
+
+// Apply all model-specific + dependency rules to the option list
+function refreshOptionStates(){
+  if(!selectedModel) return;
+  const m = MODELS[selectedModel];
+  const redarcOn = m.ultra || document.getElementById('chk-redarc').checked;
+  // Items standard on Ultra
+  if(m.ultra) includedOnUltra.forEach(id => setOptState(id,'incl'));
+  // RedVision power system — optional add-on on Intrepid
+  if(!m.ultra) setOptState('chk-redarc','avail');
+  // A/C requires the RedVision power system
+  if(!m.ultra) setOptState('chk-ac', redarcOn ? 'avail' : 'dep', 'Add RedVision');
+  // 2000W 12V inverter — Intrepid only, and only when NOT running RedVision
+  if(m.ultra) setOptState('chk-inverter-basic','na','Ultra: REDARC');
+  else setOptState('chk-inverter-basic', redarcOn ? 'na' : 'avail', 'Use REDARC');
+  // 2000W REDARC inverter — requires the RedVision power system
+  setOptState('chk-inverter-ultra', redarcOn ? 'avail' : 'dep', 'Add RedVision');
+  // Airbag suspension — not available on Super Lite chassis
+  if(m.lite) setOptState('chk-airbag','na','Not on Lite');
+}
 
 function selectModel(m, price) {
   selectedModel = m; modelPrice = price;
   ['xt-intrepid','xt-ultra','sl-intrepid','sl-ultra'].forEach(x => document.getElementById('card-'+x).classList.remove('sel'));
   document.getElementById('card-'+m).classList.add('sel');
-  const isUltra = m.includes('ultra');
-  document.querySelectorAll('.or input[type=checkbox]').forEach(c => {
-    c.closest('.or').classList.remove('disabled','is-incl');
-    c.disabled = false; c.checked = false;
-    const pr = parseFloat(c.dataset.price)||0;
-    const pid = 'pr-'+c.id.replace('chk-','');
-    const el = document.getElementById(pid);
-    if(el) el.innerHTML = pr > 0 ? '+ $'+pr.toLocaleString() : '';
-  });
-  if(isUltra) {
-    ultraIncludes.forEach(id => {
-      const c = document.getElementById(id); if(!c) return;
-      c.closest('.or').classList.add('is-incl'); c.disabled=true; c.checked=false;
-      const pid = 'pr-'+id.replace('chk-','');
-      const el = document.getElementById(pid); if(el) el.innerHTML='<span class="incl-badge">INCLUDED</span>';
-    });
-  }
-  // N/A: airbag not available on Lite models
-  if(m.includes('sl')) {
-    const ab = document.getElementById('chk-airbag');
-    if(ab) { ab.closest('.or').classList.add('disabled'); ab.disabled=true; }
-  }
+  // Reset every option to a clean, available, unchecked state
+  document.querySelectorAll('.or input[type=checkbox]').forEach(c => { c.checked=false; setOptState(c.id,'avail'); });
+  refreshOptionStates();
   updateSummary();
 }
 
 function toggle(id) {
   const c = document.getElementById(id);
-  if(c && !c.disabled) { c.checked = !c.checked; updateSummary(); }
+  if(c && !c.disabled) { c.checked = !c.checked; refreshOptionStates(); updateSummary(); }
 }
 
 function calcOptionsTotal() {
@@ -479,12 +511,6 @@ function detailsComplete(){
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return false;
   return true;
 }
-function applyConstraints(m){
-  if(!m) return;
-  const isUltra=m.includes('ultra');
-  ultraIncludes.forEach(id => { const c=document.getElementById(id); if(c) c.disabled=isUltra; });
-  if(m.includes('sl')){ const ab=document.getElementById('chk-airbag'); if(ab) ab.disabled=true; }
-}
 function refreshLock(){
   const ok=detailsComplete();
   const bs=document.getElementById('build-section');
@@ -493,7 +519,7 @@ function refreshLock(){
   bs.classList.toggle('locked',!ok);
   // hard-disable every control in the build area until details are complete (blocks mouse AND keyboard)
   bs.querySelectorAll('input').forEach(i => { i.disabled = !ok; });
-  if(ok) applyConstraints(selectedModel);
+  if(ok) refreshOptionStates();
   ln.style.display='flex';
   if(ok){
     ln.classList.add('unlocked');
